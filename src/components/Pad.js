@@ -47,7 +47,8 @@ export default class Pad extends Component {
     const clip = document.getElementById(this.props.id);
     clip.currentTime = 0;
     clip.volume = this.props.volume/100;
-    clip.play(); 
+    // clip.play(); 
+    
     // Updates display
     this.props.updateDisplay(this.props.name);
     // Set the Pad's style to active for 200ms and back to inactive

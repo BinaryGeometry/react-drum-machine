@@ -25,10 +25,14 @@ export default class Display extends Component<IProps, IState> {
     this.state = {
       padStyle : defaultTheme
     }
-	 this.ref = SVGSVGElement; 
+	  
     // this.display = 'Showing something';
     this.display = ValidationService.firstValidationMethod();
-	// this.ref = SVGSVGElement;  
+	this.ref = SVGSVGElement;  
+
+	this.width = 200;
+    this.scaleFactor = 10;
+    this.barHeight = 20;
 	
 
     // this.playClip = this.playClip.bind(this);
@@ -36,10 +40,10 @@ export default class Display extends Component<IProps, IState> {
   }
 
 
-  buildGraph(data: Array<number>) {
-    const width = 200,
-    scaleFactor = 10,
-    barHeight = 20;
+  buildGraph(data: Array<number>, width: Number, scaleFactor: Number, barHeight: Number) {
+  	// this.ref = SVGSVGElement;
+   
+	console.log('called with data', data)
 
     const graph = d3.select(this.ref)
       .attr("width", width)
@@ -69,7 +73,41 @@ export default class Display extends Component<IProps, IState> {
   
   componentDidMount() {
     // activate   
-    this.buildGraph([5, 10, 12]);
+    console.log('mounting')
+    this.buildGraph([this.display.volume, this.display.volume, this.display.volume],
+    	this.width, this.scaleFactor, this.barHeight);
+
+  }
+
+   componentDidUpdate() {
+	const graph = d3.select(this.ref)
+	const bar = graph.selectAll("g")
+           .remove()
+
+      .exit()
+
+      bar.data([this.display.volume, this.display.volume, this.display.volume])
+      .enter()
+      .append("g")
+      .attr("transform", function(d, i) {
+            return "translate(0," + i * this.barHeight + ")";
+      });
+
+
+   //  // this.buildGraph([this.display.volume, this.display.volume, this.display.volume]);
+
+
+   //  // this.buildGraph([55, 150, 152]);
+   //  // d3.selectAll("cirlce")
+
+   //  //   .remove()
+
+   //  //   .exit()
+
+   //  // this.createGraph.data = [this.state.income, this.state.savings, this.state.housing, this.state.subscriptions, this.state.transportation, this.state.entertainment, this.state.food]
+
+   //  // this.createGraph()
+
   }
   
   render(){
